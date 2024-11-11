@@ -28,6 +28,11 @@ python3 chat.py
 ## Demo Scripts
 
 * [`chat.py`](./chat.py): simple chatbot demo, letting you talk to the model.
+* [`judge.py`](./judge.py): a judge model demonstrating more advanced generation (prefilling the beginning of an answer to enforce a chain-of-thought, then forcing it to name one of several provided answers).
+
+See [vLLM's OpenAI frontend documentation](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html) for a discussion of the available generation options (you can enforce a json output format, stop the generaiton on a given keyword, etc.).
+
+You will find a quickstart example [here](https://docs.vllm.ai/en/latest/getting_started/quickstart.html#openai-chat-completions-api-with-vllm), and a number of examples [there](https://docs.vllm.ai/en/latest/getting_started/examples/examples_index.html).
 
 ## Inner-Workings
 
@@ -43,8 +48,6 @@ Any script that works with the OpenAI API should be portable, using the provided
 ### Useful links
 
 * [vllm's docker deployment doc](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html)
-* [OpenAI vLLM frontend documentation](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html)
-  (shorter version [here](https://docs.vllm.ai/en/latest/getting_started/quickstart.html#openai-chat-completions-api-with-vllm))
 * you *cannot* serve several models in the same instance, but you can serve individual models seperatly and have a front-end on top (see [here](https://docs.vllm.ai/en/v0.6.0/serving/faq.html)). Docker compose might be a way forward.
 
 ## TODO
