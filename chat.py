@@ -3,7 +3,7 @@ from openai import OpenAI
 from rich.markdown import Markdown
 from rich.console import Console
 
-WORKER_NAME = "vllm_server"
+WORKER_NAME = "large_vllm_server"
 ACCOUNT_NAME = "nstaff,nstaff_g"
 PORT=8000
 API_KEY = "EMPTY"
