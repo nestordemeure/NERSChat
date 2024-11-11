@@ -1,6 +1,6 @@
 # NERSChat: A SLURM-based Chatbot Worker
 
-This code lets you deploy a vLLM server on a SLURM cluster (specifically, Perlmutter) and communicate with it from another job.
+This code lets you deploy a [container-based vLLM server](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html) on a SLURM cluster (specifically, Perlmutter) and communicate with it from another job.
 
 The vLLM server is purposefully API compatible with OpenAI, meaning that you can easily port code that relies on the OpenAI API.
 
@@ -45,21 +45,19 @@ The worker is located by its name and group (`vllm_worker` and `nstaff`) then ta
 
 Any script that works with the OpenAI API should be portable, using the provided bit of code to find base url of a running worker.
 
-### Useful links
-
-* [vllm's docker deployment doc](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html)
-* you *cannot* serve several models in the same instance, but you can serve individual models seperatly and have a front-end on top (see [here](https://docs.vllm.ai/en/v0.6.0/serving/faq.html)). Docker compose might be a way forward.
-
 ## TODO
 
 Functionalities:
 
-* the TUI interface makes writing a pain, improve on it
-* connection might fail if the node has not loaded the model yet, give it some (2-5minutes) time (and have a nice error)
-* try reconnecting / finding a new worker if the current one died
+* set-up a multi nodes worker.
 * compose several containers?
+* connection might fail if the node has not loaded the model yet, give it some (2-5minutes) time (and have a nice error)?
+* try reconnecting / finding a new worker if the current one died?
 
 Testing:
 
-* can another account contact the worker?
 * is it possible to contact a worker from outside the cluster?
+
+Links:
+
+* you *cannot* serve several models in the same instance, but you can serve individual models seperatly and have a front-end on top (see [here](https://docs.vllm.ai/en/v0.6.0/serving/faq.html)). Docker compose might be a way forward.
