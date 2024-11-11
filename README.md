@@ -6,7 +6,7 @@ The vLLM server is purposefully API compatible with OpenAI, meaning that you can
 
 ## Usage
 
-You will find the SLURM script to get the server started in the [slurm scripts](./scripts/slurm%20scripts/) folder.
+You will find the SLURM script to get the server started in the [scripts](./scripts/) folder.
 
 You will also find a number of Python demo scripts (locating the server then talking to it) in this folder. To run them, install the following environment:
 
@@ -35,8 +35,6 @@ See [vLLM's OpenAI frontend documentation](https://docs.vllm.ai/en/latest/servin
 You will find a quickstart example [here](https://docs.vllm.ai/en/latest/getting_started/quickstart.html#openai-chat-completions-api-with-vllm), and a number of examples [there](https://docs.vllm.ai/en/latest/getting_started/examples/examples_index.html).
 
 ## Inner-Workings
-
-### Components
 
 The vLLM-openai container provides an OpenAI compatible API.
 We run it with Shifter, dpeloying it to a node using SLURM.
