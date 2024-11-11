@@ -1,2 +1,62 @@
-# NERSChat
-A SLURM-based LLM backend.
+# NERSChat: A SLURM-based Chatbot Worker
+
+This code lets you deploy a vLLM server on a SLURM cluster (specifically, Perlmutter) and communicate with it from another job.
+
+The vLLM server is purposefully API compatible with OpenAI, meaning that you can easily port code that relies on the OpenAI API.
+
+## Usage
+
+You will find the SLURM script to get the server started in the [slurm scripts](./scripts/slurm%20scripts/) folder.
+
+You will also find a number of Python demo scripts (locating the server then talking to it) in this folder. To run them, install the following environment:
+
+```sh
+module load python
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install openai rich
+```
+
+To run a script (for example the chat interface), you will need to load Python and activate the environment:
+
+```sh
+module load python
+source venv/bin/activate
+python3 chat.py
+```
+
+## Demo Scripts
+
+* [`chat.py`](./chat.py): simple chatbot demo, letting you talk to the model.
+
+## Inner-Workings
+
+### Components
+
+The vLLM-openai container provides an OpenAI compatible API.
+We run it with Shifter, dpeloying it to a node using SLURM.
+
+The worker is located by its name and group (`vllm_worker` and `nstaff`) then talk to via its hostname:port.
+
+Any script that works with the OpenAI API should be portable, using the provided bit of code to find base url of a running worker.
+
+### Useful links
+
+* [vllm's docker deployment doc](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html)
+* [OpenAI vLLM frontend documentation](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html)
+  (shorter version [here](https://docs.vllm.ai/en/latest/getting_started/quickstart.html#openai-chat-completions-api-with-vllm))
+* you *cannot* serve several models in the same instance, but you can serve individual models seperatly and have a front-end on top (see [here](https://docs.vllm.ai/en/v0.6.0/serving/faq.html)). Docker compose might be a way forward.
+
+## TODO
+
+Functionalities:
+
+* the TUI interface makes writing a pain, improve on it
+* connection might fail if the node has not loaded the model yet, give it some (2-5minutes) time (and have a nice error)
+* try reconnecting / finding a new worker if the current one died
+* compose several containers?
+
+Testing:
+
+* can another account contact the worker?
+* is it possible to contact a worker from outside the cluster?
