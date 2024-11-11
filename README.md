@@ -1,8 +1,8 @@
 # NERSChat: A SLURM-based Chatbot Worker
 
-This code lets you deploy a [container-based vLLM server](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html) on a SLURM cluster (specifically, Perlmutter) and communicate with it from another job.
+This code lets you deploy a [container-based vLLM server](https://docs.vllm.ai/en/latest/serving/deploying_with_docker.html) on a SLURM cluster (specifically, [Perlmutter](https://docs.nersc.gov/systems/perlmutter/architecture/)) and communicate with it from another job.
 
-The vLLM server is purposefully API compatible with OpenAI, meaning that you can easily port code that relies on the OpenAI API.
+The vLLM server is purposefully API compatible with OpenAI, meaning that you can easily port code that relies on the [OpenAI API](https://github.com/openai/openai-python).
 
 ## Usage
 
@@ -39,9 +39,9 @@ You will find a quickstart example [here](https://docs.vllm.ai/en/latest/getting
 The vLLM-openai container provides an OpenAI compatible API.
 We run it with Shifter, dpeloying it to a node using SLURM.
 
-The worker is located by its name and group (`vllm_worker` and `nstaff`) then talk to via its hostname:port.
+The worker is located by its name and group (`vllm_worker` and `nstaff`) then talk to via its `hostname:port`.
 
-Any script that works with the OpenAI API should be portable, using the provided bit of code to find base url of a running worker.
+Any script that works with the OpenAI API should be portable, using the [provided bit of code](./nerschat/__init__.py) to find the base url of a currently running worker.
 
 ## TODO
 
