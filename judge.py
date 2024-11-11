@@ -1,7 +1,5 @@
 from nerschat import generate_api_url
 from openai import OpenAI
-from rich.markdown import Markdown
-from rich.console import Console
 
 WORKER_NAME = "vllm_server"
 ACCOUNT_NAME = "nstaff,nstaff_g"
@@ -14,7 +12,7 @@ API_URL=generate_api_url(WORKER_NAME, ACCOUNT_NAME, PORT)
 
 # Creates an OpenAI client on top of our vLLM server.
 client = OpenAI(api_key=API_KEY, base_url=API_URL)
-print(f"Created an OpenAI client for at {API_URL}")
+print(f"Found an OpenAI client at {API_URL}")
 
 # Finds the model available
 models = client.models.list()
@@ -49,12 +47,12 @@ In 1 paragraph, write out your thought process and reasoning for which answer be
 
 def judging(question:str, answer1:str, answer2:str):
     """
-    Given a quesiton and two potential answers, picks the best one.
+    Given a question and two potential answers, picks the best one.
     """
     # generate the main prompt
     prompt = JUDGING_PROMPT.format(QUESTION=question, ANSWER1=answer1, ANSWER2=answer2)
 
-    # manually start the model's answer to forcefully get into a chain-of-thought.
+    # prefix the model's answer to forcefully get into a chain-of-thought
     answer_prefix = "Let me think about the pros and cons of each answer first."
     generation_parameters = {"add_generation_prompt":False, "continue_final_message":True}
     # submit the message
@@ -63,7 +61,7 @@ def judging(question:str, answer1:str, answer2:str):
     chat_completion = client.chat.completions.create(model=model, messages=messages, extra_body=generation_parameters)
     reasonning = chat_completion.choices[0].message.content
     
-    # force the generation to be one of the required answers
+    # force the further generation to be one of the required answers
     answer_prefix = reasonning + '\n\n' + "Thus, I believe the best answer is "
     generation_parameters = {"add_generation_prompt":False, "continue_final_message":True, 
                              "guided_choice": ["Answer #1", "Answer #2"]}

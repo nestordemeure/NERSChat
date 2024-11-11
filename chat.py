@@ -14,7 +14,7 @@ API_URL=generate_api_url(WORKER_NAME, ACCOUNT_NAME, PORT)
 
 # Creates an OpenAI client on top of our vLLM server.
 client = OpenAI(api_key=API_KEY, base_url=API_URL)
-print(f"Created an OpenAI client for at {API_URL}")
+print(f"Found an OpenAI client at {API_URL}")
 
 # Finds the model available
 models = client.models.list()
