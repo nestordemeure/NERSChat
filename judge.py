@@ -38,7 +38,7 @@ Please act as an impartial judge and evaluate the quality of the responses provi
 [The end of Answer #2]
 
 Your task is to determine which of the two answers is better, based on the following criteria:
-- Choose the response that follows the user’s instructions and answers the user’s question better.
+- Choose the response that follows the user's instructions and answers the user's question better.
 - Evaluate based on helpfulness, relevance, accuracy, depth, creativity, and level of detail of the responses.
 - Do not allow the length or order of the responses to influence your evaluation.
 
@@ -78,7 +78,7 @@ def judging(question:str, answer1:str, answer2:str):
 
 question = "How can I connect to the Perlmutter supercomputer?"
 answer1 = "You should totally use SSH!"
-answer2 = "I am sorry Dave, I cannot do that for you."
+answer2 = "I'm sorry, Dave. I'm afraid I can't do that"
 print(f"\nQuestion: `{question}`")
 print(f"\nAnswer #1: `{answer1}`")
 print(f"\nAnswer #2: `{answer2}`")
