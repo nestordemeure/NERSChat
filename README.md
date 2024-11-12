@@ -47,7 +47,6 @@ Any script that works with the OpenAI API should be portable, using the [provide
 
 Functionalities:
 
-* set-up a multi nodes worker.
 * compose several containers?
 * connection might fail if the node has not loaded the model yet, give it some (2-5minutes) time (and have a nice error)?
 * try reconnecting / finding a new worker if the current one died?
