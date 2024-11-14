@@ -37,12 +37,22 @@ You will find a quickstart example [here](https://docs.vllm.ai/en/latest/getting
 
 ## Inner-Workings
 
+### LLM
+
 The vLLM-openai container provides an OpenAI compatible API.
 We run it with Shifter, dpeloying it to a node using SLURM.
 
 The worker is located by its name and group (`vllm_worker` and `nstaff`) then talk to via its `hostname:port`.
 
 Any script that works with the OpenAI API should be portable, using the [provided bit of code](./nerschat/__init__.py) to find the base url of a currently running worker.
+
+### Embeddings
+
+In theory, vLLM allows serving embeddings but they currently (November 2024) do not support common architectures (like Bert) nor take into account the fact that some models add prefixes to text depending on use case (i.e. a question and a bit of knowledge should be embedded differently).
+
+Thus, we defaulted to [Huggingface's Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference).
+
+See [this page](https://huggingface.co/docs/text-embeddings-inference/quick_tour) for the various supported enpoints (the API is further detailled [here](https://huggingface.github.io/text-embeddings-inference/)).
 
 ## TODO
 
@@ -59,7 +69,3 @@ Functionalities:
 Testing:
 
 * is it possible to contact a worker from outside the cluster?
-
-Links:
-
-* you *cannot* serve several models in the same instance, but you can serve individual models seperatly and have a front-end on top (see [here](https://docs.vllm.ai/en/v0.6.0/serving/faq.html)). Docker compose might be a way forward.

@@ -14,23 +14,14 @@ API_URL=generate_api_url(WORKER_NAME, ACCOUNT_NAME, PORT)
 client = OpenAI(api_key=API_KEY, base_url=API_URL)
 print(f"Found an OpenAI client at {API_URL}")
 
-# Finds the model available
-models = client.models.list()
-model = models.data[0].id # vLLM allows only one model
-model_name = model[model.rfind('/')+1:]
-print(f"Model used: {model_name}")
-
-# This prefix is model specific
-# See: https://huggingface.co/intfloat/e5-mistral-7b-instruct
-# Many embedding models expect prefixes for queries (and maybe passages)
-# those vary model by model
-query_prefix = "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
+# text-embedding-inference does not provide a list a model, nor care for that parameter
+model='EMPTY'
 
 #--------------------------------------------------------------------------------------------------
 # DEMO
 
 # Sentences to embed
-sentences = [query_prefix + "How can I connect to Perlmutter?", "You can use SSH to connect to Perlmutter."]
+sentences = ["How can I connect to Perlmutter?", "You can use SSH to connect to Perlmutter."]
 
 # running the embedder
 responses = client.embeddings.create(model=model, input=sentences)

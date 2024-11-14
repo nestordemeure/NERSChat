@@ -20,11 +20,6 @@ MODEL=e5-mistral-7b-instruct
 MODELS_DIR=/global/cfs/cdirs/nstaff/chatbot/models
 SHIFTER_IMAGE=vllm/vllm-openai
 
-# currently required for Bert models
-# which is most embeddings
-# https://github.com/vllm-project/vllm/pull/9056
-export VLLM_ATTENTION_BACKEND=XFORMERS
-
 # Run vLLM from a container
 srun shifter --env=OUTLINES_CACHE_DIR=$TMPDIR --image=$SHIFTER_IMAGE \
              python3 -m vllm.entrypoints.openai.api_server \
