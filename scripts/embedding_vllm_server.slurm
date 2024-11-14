@@ -14,11 +14,18 @@
 # Parameters
 HOSTNAME=$(hostname)
 PORT=8000
-MODEL=bge-large-en-v1.5
+#MODEL=all-mpnet-base-v2 # non-supported MPNetForMaskedLM architecture
+#MODEL=bge-large-en-v1.5 # non-supported Bertbase architecture
+MODEL=e5-mistral-7b-instruct
 MODELS_DIR=/global/cfs/cdirs/nstaff/chatbot/models
 SHIFTER_IMAGE=vllm/vllm-openai
+
+# currently required for Bert models
+# which is most embeddings
+# https://github.com/vllm-project/vllm/pull/9056
+export VLLM_ATTENTION_BACKEND=XFORMERS
 
 # Run vLLM from a container
 srun shifter --env=OUTLINES_CACHE_DIR=$TMPDIR --image=$SHIFTER_IMAGE \
              python3 -m vllm.entrypoints.openai.api_server \
-             --model $MODELS_DIR/$MODEL --host $HOSTNAME --port $PORT --tensor-parallel-size $SLURM_GPUS_ON_NODE --task embedding
+             --model $MODELS_DIR/$MODEL --host $HOSTNAME --port $PORT --tensor-parallel-size $SLURM_GPUS_ON_NODE

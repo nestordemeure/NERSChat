@@ -29,6 +29,7 @@ python3 chat.py
 
 * [`chat.py`](./chat.py): simple chatbot demo, letting you talk to the model.
 * [`judge.py`](./judge.py): a judge model demonstrating more advanced generation (prefilling the beginning of an answer to enforce a chain-of-thought, then forcing it to name one of several provided answers).
+* [embedding.py](./embedding.py): a demo of the embedding functionality.
 
 See [vLLM's OpenAI frontend documentation](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html) for a discussion of the available generation options (you can enforce a json output format, stop the generaiton on a given keyword, etc.).
 
@@ -48,6 +49,10 @@ Any script that works with the OpenAI API should be portable, using the [provide
 Functionalities:
 
 * compose several containers?
+  * this is a usecase for docker compose / rancher
+    * an easy solution would be a lightweight router: starting several vllm on different port and routing commands to them
+    * or... we launch as many workers as we want and a router periodically check which models are available and takes/redirects requests
+    * or, we could create a router at the client level, sending feelers for the various workers and redirecting as needed
 * connection might fail if the node has not loaded the model yet, give it some (2-5minutes) time (and have a nice error)?
 * try reconnecting / finding a new worker if the current one died?
 

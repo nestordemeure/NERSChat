@@ -20,11 +20,17 @@ model = models.data[0].id # vLLM allows only one model
 model_name = model[model.rfind('/')+1:]
 print(f"Model used: {model_name}")
 
+# This prefix is model specific
+# See: https://huggingface.co/intfloat/e5-mistral-7b-instruct
+# Many embedding models expect prefixes for queries (and maybe passages)
+# those vary model by model
+query_prefix = "Instruct: Given a web search query, retrieve relevant passages that answer the query\nQuery: "
+
 #--------------------------------------------------------------------------------------------------
 # DEMO
 
 # Sentences to embed
-sentences = ["Hello my name is", "The best thing about vLLM is that it supports many different models"]
+sentences = [query_prefix + "How can I connect to Perlmutter?", "You can use SSH to connect to Perlmutter."]
 
 # running the embedder
 responses = client.embeddings.create(model=model, input=sentences)
@@ -32,4 +38,8 @@ embeddings = [data.embedding for data in responses.data] # lists of floats
 
 # displaying results
 for embedding in embeddings:
-  print(f"type:{type(embedding)} value:{embedding}")
+  print(f"type:{type(embedding)} len:{len(embedding)}")
+
+# display similarity
+dot = sum( (e1*e2) for (e1,e2) in zip(embeddings[0], embeddings[1]) )
+print(f"dot product: {dot}")

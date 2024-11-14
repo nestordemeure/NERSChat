@@ -58,4 +58,4 @@ shifter --image=$SHIFTER_IMAGE \
 
 # Some Datapoint:
 # 1 node will hold a 13b model (more?)
-# 2 nodes will hold a 104b model (2 nodes will not)
+# 2 nodes will hold a 104b model (1 nodes will not)
