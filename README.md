@@ -29,7 +29,8 @@ python3 chat.py
 
 * [`chat.py`](./chat.py): simple chatbot demo, letting you talk to the model.
 * [`judge.py`](./judge.py): a judge model demonstrating more advanced generation (prefilling the beginning of an answer to enforce a chain-of-thought, then forcing it to name one of several provided answers).
-* [embedding.py](./embedding.py): a demo of the embedding functionality.
+* [`embedding.py`](./embedding.py): a demo of the embedding functionality.
+* [`all.py`](./all.py): tries accessing both llm and embedding type of functionalities via the router.
 
 See [vLLM's OpenAI frontend documentation](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html) for a discussion of the available generation options (you can enforce a json output format, stop the generaiton on a given keyword, etc.).
 
@@ -46,6 +47,8 @@ The worker is located by its name and group (`vllm_worker` and `nstaff`) then ta
 
 Any script that works with the OpenAI API should be portable, using the [provided bit of code](./nerschat/__init__.py) to find the base url of a currently running worker.
 
+[Huggingface's Text Generation Inference](https://github.com/huggingface/text-generation-inference) is one promising backend alternative we have not explored. It has a reputation for being slower / less efficient than vLLM but supporting a wider range of models.
+
 ### Embeddings
 
 In theory, vLLM allows serving embeddings but they currently (November 2024) do not support common architectures (like Bert) nor take into account the fact that some models add prefixes to text depending on use case (i.e. a question and a bit of knowledge should be embedded differently).
@@ -53,6 +56,10 @@ In theory, vLLM allows serving embeddings but they currently (November 2024) do 
 Thus, we defaulted to [Huggingface's Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference).
 
 See [this page](https://huggingface.co/docs/text-embeddings-inference/quick_tour) for the various supported enpoints (the API is further detailled [here](https://huggingface.github.io/text-embeddings-inference/)).
+
+### Router
+
+Since we can only serve one model (and one type of model) per worker, there is a `router` script that puts a simple `nginx` router on top of two workers, redirecting queries depending on their routes (embedding or LLM?).
 
 ## TODO
 

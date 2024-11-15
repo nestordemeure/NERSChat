@@ -1,0 +1,27 @@
+# nginx.conf.template
+pid ${TMPDIR}/nginx.pid;
+
+events {}
+
+http {
+    client_body_temp_path ${TMPDIR}/client_body;
+    proxy_temp_path ${TMPDIR}/proxy;
+    fastcgi_temp_path ${TMPDIR}/fastcgi;
+    uwsgi_temp_path ${TMPDIR}/uwsgi;
+    scgi_temp_path ${TMPDIR}/scgi;
+
+    server {
+        listen ${PORT};
+        server_name localhost;
+
+        # Forward specific routes to port2
+        location ~ ^/(embed|embed_all|embed_sparse|predict|rerank|similarity|v1/embeddings)$ {
+            proxy_pass http://${HOSTNAME_EMBEDDINGS}:${PORT_EMBEDDINGS};
+        }
+
+        # Forward all other routes to port1
+        location / {
+            proxy_pass http://${HOSTNAME_LLM}:${PORT_LLM};
+        }
+    }
+}

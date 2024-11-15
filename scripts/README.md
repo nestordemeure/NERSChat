@@ -9,3 +9,7 @@ Embeddings:
 
 * [`embedding_hf_server.slurm`](./embedding_hf_server.slurm): A lightweight text-embeddings-inference based embedding server (also deals with things like reranking).
 * [`embedding_vllm_server.slurm`](./embedding_vllm_server.slurm): A vLLM-based embedding server (supports fewer models, and no built-in query prefixing).
+
+Others:
+
+* [`router_vllm_server.slurm`](./router_vllm_server.slurm): runs both embeddings and a LLM, redirecting requests as needed using a `nginx`-based router (see [`nginx.conf.template`](./nginx.conf.template)).
