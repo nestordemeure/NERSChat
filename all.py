@@ -16,7 +16,7 @@ API_URL=generate_api_url(WORKER_NAME, ACCOUNT_NAME, PORT)
 client = OpenAI(api_key=API_KEY, base_url=API_URL)
 print(f"Found an OpenAI client at {API_URL}")
 
-# Finds the model available
+# Finds the LLM model available
 models = client.models.list()
 model = models.data[0].id # vLLM allows only one model
 model_name = model[model.rfind('/')+1:]
@@ -31,7 +31,7 @@ answer=chat_completion.choices[0].message.content
 print(f"answer: {answer}")
 
 sentences = ["How can I connect to Perlmutter?", "You can use SSH to connect to Perlmutter."]
-responses = client.embeddings.create(model=model, input=sentences)
+responses = client.embeddings.create(model=model, input=sentences) # the model parameter is ignored
 embeddings = [data.embedding for data in responses.data]
 dot = sum( (e1*e2) for (e1,e2) in zip(embeddings[0], embeddings[1]) )
 print(f"dot product: {dot}")
