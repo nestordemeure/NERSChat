@@ -3,10 +3,8 @@
 #SBATCH --time=00:30:00
 #SBATCH --qos=debug
 #SBATCH --nodes=1
-#SBATCH --exclusive
 #SBATCH --constraint=gpu
-#SBATCH --ntasks-per-node=2
-#SBATCH --gpus-per-node=4
+#SBATCH --exclusive
 #SBATCH --account=nstaff
 #SBATCH --output=router_output.log
 #SBATCH --image=vllm/vllm-openai:latest
@@ -36,16 +34,17 @@ CONFIGURATION_ROUTER=nginx.conf.template
 
 # Run embedder container
 echo "Starting embedder"
-srun --ntasks=1 --gpus 1 -c 2 --cpu_bind=cores \
+srun --overlap --ntasks-per-node=1 --gpus-per-task=1 --gpu-bind=map_gpu:0  \
      shifter --image=$IMAGE_EMBEDDINGS text-embeddings-router \
      --model-id $MODELS_DIR/$MODEL_EMBEDDINGS --hostname $HOSTNAME_EMBEDDINGS --port $PORT_EMBEDDINGS &
 
 # Run LLM container
+# Overlap on GPU0, it is that or using 2 gpus (we need the number of gpus to be even so 3 would not do).
 echo "Starting LLM"
-srun --ntasks=1 --gpus 3 -c 2 --cpu_bind=cores \
+srun --overlap --ntasks-per-node=1 --gpus-per-task=4 \
      shifter --env=OUTLINES_CACHE_DIR=$TMPDIR --image=$IMAGE_LLM \
      python3 -m vllm.entrypoints.openai.api_server \
-     --model $MODELS_DIR/$MODEL_LLM --host $HOSTNAME_LLM --port $PORT_LLM --tensor-parallel-size $SLURM_GPUS_ON_NODE &
+     --model $MODELS_DIR/$MODEL_LLM --host $HOSTNAME_LLM --port $PORT_LLM --tensor-parallel-size 4 &
 
 # Create a router config file
 echo "Generating router config file"

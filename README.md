@@ -59,7 +59,9 @@ See [this page](https://huggingface.co/docs/text-embeddings-inference/quick_tour
 
 ### Router
 
-Since we can only serve one model (and one type of model) per worker, there is a `router` script that puts a simple `nginx` router on top of two workers, redirecting queries depending on their routes (embedding or LLM?).
+Since we can only serve one model (and one type of model) per inference worker, we have a `router` script that runs an embedding inference model (on a single GPU), and an LLM inference model (on all GPUs), each listening to their own port.
+
+We put a simple `nginx` router on top, redirecting queries to one or the other depending on their routes (embedding or LLM?).
 
 ## TODO
 
