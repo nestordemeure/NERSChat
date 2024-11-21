@@ -31,6 +31,7 @@ python3 chat.py
 * [`judge.py`](./judge.py): a judge model demonstrating more advanced generation (prefilling the beginning of an answer to enforce a chain-of-thought, then forcing it to name one of several provided answers).
 * [`embedding.py`](./embedding.py): a demo of the embedding functionality.
 * [`all.py`](./all.py): tries accessing both llm and embedding type of functionalities via the router.
+* [`standalone.py`](./standalone.py): demo code that takes the host and port as inputs.
 
 See [vLLM's OpenAI frontend documentation](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html) for a discussion of the available generation options (you can enforce a json output format, stop the generaiton on a given keyword, etc.).
 

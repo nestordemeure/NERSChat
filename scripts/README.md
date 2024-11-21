@@ -13,3 +13,4 @@ Embeddings:
 Others:
 
 * [`router_vllm_server.slurm`](./router_vllm_server.slurm): runs both embeddings and a LLM, redirecting requests as needed using a `nginx`-based router (see [`nginx.conf.template`](./nginx.conf.template)).
+* [`standalone_vllm_server.slurm`](./standalone_vllm_server.slurm): runs both vLLM and a client script on the same node.
